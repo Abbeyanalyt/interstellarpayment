@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Book Interstellar and Crew</title>
+<style>
+:root{--bg:#f6f3ff;--card:#fff;--ink:#1d1633;--mut:#6b6485;--pri:#6d28d9;--acc:#f59e0b;--line:#e2dcf5;--warn:#fff4d6;--warnink:#7a4a00;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#140f26;--card:#1f1838;--ink:#f1edff;--mut:#a59fc4;--pri:#a78bfa;--acc:#fbbf24;--line:#352c58;--warn:#3a2c0a;--warnink:#fcd98a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#140f26;--card:#1f1838;--ink:#f1edff;--mut:#a59fc4;--pri:#a78bfa;--acc:#fbbf24;--line:#352c58;--warn:#3a2c0a;--warnink:#fcd98a;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.5}
+.wrap{max-width:680px;margin:0 auto;padding:20px 16px 40px}
+header{text-align:center;padding:12px 0 8px}
+h1{margin:0;font-size:1.7rem;color:var(--pri)}
+.tag{color:var(--mut);margin:4px 0 0}
+.alert{background:var(--warn);color:var(--warnink);border-radius:12px;padding:12px 14px;margin:16px 0;font-weight:600}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin:14px 0}
+h2{margin:0 0 10px;font-size:1.15rem}
+.item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.item:last-child{border-bottom:0}
+.item span{font-weight:600}
+.step{display:flex;align-items:center;gap:8px}
+.step button{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-size:1.2rem;cursor:pointer}
+.step output{min-width:24px;text-align:center;font-weight:700}
+label{display:block;font-weight:600;margin:10px 0 4px;font-size:.92rem}
+input,select,textarea{width:100%;padding:11px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn{display:block;width:100%;text-align:center;padding:14px;border-radius:12px;border:0;background:var(--pri);color:#fff;font-weight:700;font-size:1rem;cursor:pointer;text-decoration:none;margin-top:14px}
+.btn.alt{background:transparent;color:var(--pri);border:1px solid var(--pri)}
+.pay dt{color:var(--mut);font-size:.85rem;margin-top:8px}
+.pay dd{margin:0;font-weight:700;font-size:1.05rem}
+dl{margin:0}
+ul{padding-left:20px;margin:6px 0}
+#out{display:none;margin-top:12px}
+.note{color:var(--mut);font-size:.85rem;margin-top:8px}
+.calc{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.res{display:flex;justify-content:space-between;align-items:center;padding:12px;border-radius:12px;margin-top:10px;background:var(--bg);border:1px solid var(--line)}
+.res.big{background:var(--pri);color:#fff;border-color:var(--pri);font-size:1.1rem}
+.res strong{font-size:1.15rem}
+footer{text-align:center;color:var(--mut);font-size:.85rem;margin-top:24px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<h1>Interstellar and Crew</h1>
+<p class="tag">The master of games and fun</p>
+</header>
+
+<div class="alert">⏰ Pick your date before someone else does, so we can be there for you. Dates are first come, first served.</div>
+
+<form id="f" class="card" onsubmit="return false">
+<h2>1. What do you need?</h2>
+<div id="items"></div>
+
+<h2 style="margin-top:18px">2. Pick your event day</h2>
+<div class="row">
+<div><label for="month">Month</label><select id="month"></select></div>
+<div><label for="day">Day (1 to 20)</label><select id="day"></select></div>
+</div>
+
+<h2 style="margin-top:18px">3. Your details</h2>
+<label for="name">Full name</label><input id="name" autocomplete="name">
+<div class="row">
+<div><label for="phone">Phone / WhatsApp</label><input id="phone" type="tel" autocomplete="tel"></div>
+<div><label for="email">Your email</label><input id="email" type="email" autocomplete="email"></div>
+</div>
+<label for="venue">Event location</label><input id="venue">
+<label for="notes">Anything else we should know?</label><textarea id="notes" rows="3"></textarea>
+
+<h2 style="margin-top:18px">4. Payment</h2>
+<p class="note" style="margin-top:0">Payment Terms</p>
+<ul>
+<li><strong>Commitment Deposit (70%)</strong> of the agreed amount: required to lock your event date and reserve the equipment and crew.</li>
+<li><strong>Balance (30%)</strong> of the agreed amount: paid immediately when the equipment arrives (for example, 24 hours prior to setup).</li>
+</ul>
+
+<div class="calc">
+<label for="amt">Total agreed amount (₦)</label>
+<input id="amt" type="text" inputmode="decimal" placeholder="Enter the total amount we agreed">
+<div class="res big"><span>You pay now (70% deposit)</span><strong id="dep">₦0</strong></div>
+<div class="res"><span>Balance later (30%)</span><strong id="bal">₦0</strong></div>
+</div>
+
+<div class="calc pay">
+<p class="note" style="margin-top:0">Authorized Payment Account (AS Ventures Management)</p>
+<dl>
+<dt>Account Name</dt><dd>Asowo Kabir Abiodun</dd>
+<dt>Account Number</dt><dd id="acct">8082541515</dd>
+<dt>Bank</dt><dd>Opay</dd>
+</dl>
+<button class="btn alt" id="copy" type="button">Copy account number</button>
+</div>
+
+<button class="btn" id="send" type="button">Send my request</button>
+<p class="note">Your email app will open with your request ready to send to us. Just press send.</p>
+<div id="out" class="card">
+<p style="margin-top:0"><strong>If your email app did not open</strong>, copy this and email it to <strong>asowoabiodun@gmail.com</strong>:</p>
+<textarea id="summary" rows="9" readonly></textarea>
+<a class="btn alt" id="mail" href="#">Open email again</a>
+</div>
+</form>
+
+<footer>© Interstellar and Crew · operated under AS Ventures</footer>
+</div>
+
+<script>
+var OFFERS=["Bouncing castle","Popcorn","Candy floss","Master of games","Joker and dancers"];
+var qty={};
+var box=document.getElementById("items");
+OFFERS.forEach(function(n,i){
+  qty[n]=0;
+  var d=document.createElement("div");d.className="item";
+  d.innerHTML='<span>'+n+'</span><div class="step"><button type="button" aria-label="Less '+n+'">−</button><output id="q'+i+'">0</output><button type="button" aria-label="More '+n+'">+</button></div>';
+  var b=d.querySelectorAll("button"),o=d.querySelector("output");
+  b[0].onclick=function(){if(qty[n]>0){qty[n]--;o.textContent=qty[n];}};
+  b[1].onclick=function(){qty[n]++;o.textContent=qty[n];};
+  box.appendChild(d);
+});
+var ms=["January","February","March","April","May","June","July","August","September","October","November","December"];
+var mSel=document.getElementById("month"),dSel=document.getElementById("day");
+var now=new Date();
+for(var k=0;k<12;k++){
+  var dt=new Date(now.getFullYear(),now.getMonth()+k,1);
+  var o=document.createElement("option");
+  o.value=ms[dt.getMonth()]+" "+dt.getFullYear();o.textContent=o.value;mSel.appendChild(o);
+}
+for(var j=1;j<=20;j++){var p=document.createElement("option");p.value=j;p.textContent="Day "+j;dSel.appendChild(p);}
+
+function num(){return parseFloat(String(document.getElementById("amt").value).replace(/,/g,""))||0;}
+function fmt(n){return "₦"+n.toLocaleString("en-NG",{maximumFractionDigits:2});}
+function upd(){var t=num();document.getElementById("dep").textContent=fmt(t*0.7);document.getElementById("bal").textContent=fmt(t*0.3);}
+document.getElementById("amt").addEventListener("input",upd);
+function amtText(){return num()>0?fmt(num()):"(not entered)";}
+function depText(){return num()>0?fmt(num()*0.7):"(not entered)";}
+function balText(){return num()>0?fmt(num()*0.3):"(not entered)";}
+var TO="asowoabiodun@gmail.com";
+function build(){
+  var v=function(id){return document.getElementById(id).value.trim();};
+  var lines=["NEW EVENT REQUEST - Interstellar and Crew",""];
+  var any=false;
+  OFFERS.forEach(function(n){if(qty[n]>0){any=true;lines.push(n+": "+qty[n]);}});
+  if(!any)lines.push("(no items selected)");
+  lines.push("","Event date: Day "+dSel.value+", "+mSel.value,"",
+    "Total agreed amount: "+amtText(),"Deposit to pay (70%): "+depText(),"Balance (30%): "+balText(),"","Name: "+v("name"),"Phone: "+v("phone"),"Email: "+v("email"),"Location: "+v("venue"),"Notes: "+v("notes"));
+  return lines.join("\n");
+}
+document.getElementById("send").onclick=function(){
+  var name=document.getElementById("name").value.trim(),phone=document.getElementById("phone").value.trim();
+  var any=OFFERS.some(function(n){return qty[n]>0;});
+  if(!any){alert("Please choose at least one item.");return;}
+  if(!name||!phone){alert("Please enter your name and phone number.");return;}
+  var body=build();
+  var href="mailto:"+TO+"?subject="+encodeURIComponent("Event request from "+name)+"&body="+encodeURIComponent(body);
+  document.getElementById("summary").value=body;
+  var m=document.getElementById("mail");m.href=href;m.target="_top";
+  document.getElementById("out").style.display="block";
+  m.click();
+};
+document.getElementById("copy").onclick=function(){
+  var t=document.getElementById("acct").textContent,b=this;
+  function done(){b.textContent="Copied ✓";setTimeout(function(){b.textContent="Copy account number";},2000);}
+  try{navigator.clipboard.writeText(t).then(done,function(){b.textContent="Account: "+t;});}
+  catch(e){b.textContent="Account: "+t;}
+};
+</script>
+</body>
+</html>
